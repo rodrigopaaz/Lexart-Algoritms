@@ -1,32 +1,37 @@
-function cyclotron(particle, matrix) {
+const { accelerateElectron } = require("./acelerateEletron");
+const { accelerateNeutron } = require("./acelerateNeutron");
+const { accelerateProton } = require("./acelerateProton");
+const { createMatrix } = require("./createMatrix");
+
+  function cyclotron(particle, matrix) {
+    const size = matrix.length;
+  
     switch (particle) {
       case "e":
-        matrix[0].fill(particle);
-        for (let i = 1; i < matrix.length; i++) {
-          matrix[i][matrix[i].length - 1] = particle;
-        }
-        break;
+        return accelerateElectron(createMatrix(size, 1));
       case "p":
-        matrix[0].fill(particle);
-        for (let i = 1; i < matrix.length - 1; i++) {
-          matrix[i][0] = particle;
-          matrix[i][1] = 1;
-        }
-        matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1] = 1;
-        break;
+        return accelerateProton(createMatrix(size, 1));
+      case "n":
+        return accelerateNeutron(createMatrix(size, 1));
       default:
-        break;
+        return matrix;
     }
-    return matrix;
   }
   
-  let matrix = [
-    [1, 1, 1, 1],
-    [1, 1, 1, 1],
-    [1, 1, 1, 1],
-    [1, 1, 1, 1]
-  ];
+  let matrix = createMatrix(4, 1);
+  let result = cyclotron("p", matrix);
+  console.log(result);
+
+  matrix = createMatrix(6, 1);
+  result = cyclotron("e", matrix);
+  console.log(result);
   
-  let result = cyclotron("e", matrix);
+  
+  matrix = createMatrix(6, 1);
+  result = cyclotron("p", matrix);
+  console.log(result);
+  
+  matrix = createMatrix(4, 1);
+  result = cyclotron("n", matrix);
   console.log(result);
   
